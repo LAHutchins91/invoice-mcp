@@ -4,7 +4,7 @@ import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/
 import { z } from "zod";
 import { PRO_REQUIRED, PUBLIC_MCP_METHODS, SIGN_IN_REQUIRED, hasInvoiceAccess } from "./access.js";
 import { checkoutForm, invoiceUserId, readStripeEvent, stripePost, subscriptionPatch } from "./billing.js";
-import { createFileInvoiceStore, defaultInvoiceDataPath, type InvoiceStore } from "./invoice-store.js";
+import { resolveInvoiceStore, type InvoiceStore } from "./invoice-store.js";
 import { createInvoiceMcpServer } from "./invoice-tools.js";
 import { MCP_CORS_HEADERS, mcpBrowserOriginAllowed } from "./mcp-clients.js";
 import { validateMcpClaims } from "./mcp-claims.js";
@@ -70,7 +70,7 @@ export function defaultDeps(): InvoiceDeps {
     stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
     stripePriceMonthly: process.env.STRIPE_PRICE_MONTHLY ?? "",
     stripePriceYearly: process.env.STRIPE_PRICE_YEARLY ?? "",
-    store: createFileInvoiceStore(process.env.INVOICE_DATA_PATH ?? defaultInvoiceDataPath()),
+    store: resolveInvoiceStore(),
     authenticate: (req) => authenticateWithSupabase(req, supabaseUrl, supabaseAnonKey),
     validateClaims: (token, userId) => validateMcpClaims(token, userId, `${supabaseUrl}/auth/v1`, `${appBaseUrl}/mcp`)
   };
