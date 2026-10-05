@@ -145,7 +145,7 @@ export function createInvoiceMcpServer(options: { userId: string; entitled: bool
     "describe_line",
     "Correct a line description while the invoice is still a draft. After approval, a different description is refused. Use suggest_invoice_change with add_line for a different line.",
     { invoiceId: id, lineId: id, description },
-    write,
+    { ...write, destructiveHint: true },
     async (args) => options.store.describeLine(options.userId, {
       invoiceId: args.invoiceId as string,
       lineId: args.lineId as string,
@@ -181,7 +181,7 @@ export function createInvoiceMcpServer(options: { userId: string; entitled: bool
     "set_invoice_due",
     "Set the due date as a calendar day in YYYY-MM-DD form. After the invoice is sealed, a different date is refused until accept_invoice_change applies a move_due_date suggestion.",
     { invoiceId: id, dueOn: day },
-    write,
+    { ...write, destructiveHint: true },
     async (args) => options.store.setInvoiceDue(options.userId, {
       invoiceId: args.invoiceId as string,
       dueOn: args.dueOn as string
@@ -227,7 +227,7 @@ export function createInvoiceMcpServer(options: { userId: string; entitled: bool
     "seal_invoice",
     "Mark the current draft as the approved invoice. Pass confirmed true only after the freelancer explicitly approves the lines, quantities, rates, due date, late terms, and any discount already on the draft.",
     { invoiceId: id, confirmed: z.literal(true) },
-    { ...write, idempotentHint: true },
+    { ...write, destructiveHint: true, idempotentHint: true },
     async ({ invoiceId }) => options.store.sealInvoice(options.userId, invoiceId as string)
   );
 
