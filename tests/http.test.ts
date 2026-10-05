@@ -1,4 +1,4 @@
-import { createServer, type Server } from "node:http";
+import { createServer, request as httpRequest, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import crypto from "node:crypto";
 import { mkdtemp } from "node:fs/promises";
@@ -63,6 +63,38 @@ function mcpHeaders(origin?: string): Record<string, string> {
   };
 }
 
+function postRaw(url: string, headers: Record<string, string | undefined>, body: string): Promise<{ status: number; headers: Record<string, string | string[] | undefined>; json: unknown }> {
+  const requestHeaders: Record<string, string> = { "content-length": String(Buffer.byteLength(body)) };
+  for (const [name, value] of Object.entries(headers)) {
+    if (value !== undefined) requestHeaders[name] = value;
+  }
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const req = httpRequest({
+      hostname: target.hostname,
+      port: target.port,
+      path: `${target.pathname}${target.search}`,
+      method: "POST",
+      headers: requestHeaders
+    }, (res) => {
+      const chunks: Buffer[] = [];
+      res.on("data", (chunk: Buffer) => chunks.push(chunk));
+      res.on("end", () => {
+        const text = Buffer.concat(chunks).toString("utf8");
+        let json: unknown = text;
+        try {
+          json = JSON.parse(text);
+        } catch {
+          // Leave non-JSON bodies as text so assertions can show the failure.
+        }
+        resolve({ status: res.statusCode ?? 0, headers: res.headers, json });
+      });
+    });
+    req.on("error", reject);
+    req.end(body);
+  });
+}
+
 describe("HTTP MCP", () => {
   it("default-exports the Express app that answers tools/list", async () => {
     expect(typeof app).toBe("function");
@@ -89,6 +121,37 @@ describe("HTTP MCP", () => {
     expect(response.status).toBe(200);
     const body = await response.json() as { result: { tools: Array<{ name: string }> } };
     expect(body.result.tools.map((tool) => tool.name).sort()).toEqual([...INVOICE_TOOL_NAMES].sort());
+  });
+
+  it("lists tools when Accept is missing or lists only one Streamable HTTP type", async () => {
+    const options = await deps();
+    const url = await listen(createApp(options));
+    const listBody = JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list" });
+    const accepts: Array<string | undefined> = [
+      "application/json",
+      "*/*",
+      "text/event-stream",
+      "application/json, text/event-stream",
+      undefined
+    ];
+    for (const accept of accepts) {
+      const response = await postRaw(`${url}/mcp`, {
+        "content-type": "application/json",
+        accept
+      }, listBody);
+      expect(response.status, accept ?? "(missing Accept)").toBe(200);
+      const payload = response.json as { result: { tools: Array<{ name: string }> } };
+      expect(payload.result.tools.map((tool) => tool.name).sort()).toEqual([...INVOICE_TOOL_NAMES].sort());
+    }
+
+    const anonymous = await postRaw(`${url}/mcp`, {
+      "content-type": "application/json",
+      accept: "application/json"
+    }, JSON.stringify({ jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: "list_invoices", arguments: {} } }));
+    expect(anonymous.status).toBe(401);
+    const challenge = anonymous.headers["www-authenticate"];
+    expect(String(challenge)).toContain("/.well-known/oauth-protected-resource/mcp");
+    expect(anonymous.json).toEqual({ error: SIGN_IN_REQUIRED });
   });
 
   it("requires OAuth and an active trial before a tool call", async () => {
