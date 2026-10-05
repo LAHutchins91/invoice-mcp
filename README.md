@@ -80,5 +80,6 @@ OAuth uses the same idea as a Supabase authorization server with dynamic client 
 - `STRIPE_SECRET_KEY`
 - `STRIPE_WEBHOOK_SECRET`
 - `STRIPE_PRICE_MONTHLY` and `STRIPE_PRICE_YEARLY` (Stripe catalog ids, not prices)
+- `OPENAI_APPS_CHALLENGE` (optional; when set, `/.well-known/openai-apps-challenge` returns that token as plain text)
 
 Tool calls other than discovery require a signed-in account whose subscription status is `active` or `trialing`.
