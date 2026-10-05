@@ -271,3 +271,7 @@ export function createApp(deps: InvoiceDeps): Express {
 
   return app;
 }
+
+// Vercel Express loads src/app.js and requires a default export that is the server.
+const app = createApp(defaultDeps());
+export default app;
