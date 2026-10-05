@@ -7,7 +7,7 @@ import path from "node:path";
 import type { Express, Request } from "express";
 import { afterEach, describe, expect, it } from "vitest";
 import { PRO_REQUIRED, SIGN_IN_REQUIRED } from "../src/access.js";
-import { createApp, type InvoiceDeps } from "../src/app.js";
+import app, { createApp, type InvoiceDeps } from "../src/app.js";
 import { createFileInvoiceStore } from "../src/invoice-store.js";
 import { INVOICE_TOOL_NAMES } from "../src/invoice-tools.js";
 import { protectedResourceMetadata } from "../src/plugin-auth.js";
@@ -64,6 +64,20 @@ function mcpHeaders(origin?: string): Record<string, string> {
 }
 
 describe("HTTP MCP", () => {
+  it("default-exports the Express app that answers tools/list", async () => {
+    expect(typeof app).toBe("function");
+    expect(typeof app.listen).toBe("function");
+    const url = await listen(app);
+    const response = await fetch(`${url}/mcp`, {
+      method: "POST",
+      headers: mcpHeaders(),
+      body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list" })
+    });
+    expect(response.status).toBe(200);
+    const body = await response.json() as { result: { tools: Array<{ name: string }> } };
+    expect(body.result.tools.map((tool) => tool.name).sort()).toEqual([...INVOICE_TOOL_NAMES].sort());
+  });
+
   it("returns Invoice tools from tools/list without a credential", async () => {
     const options = await deps();
     const url = await listen(createApp(options));
