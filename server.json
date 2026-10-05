@@ -2,14 +2,12 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.LAHutchins91/invoice",
   "title": "Invoice",
-  "description": "Approved freelance invoice: line items, quantities, approved rates, the due date, and late terms, shared with AI assistants over MCP.",
-  "version": "0.1.0",
-  "icons": [
-    {
-      "src": "https://raw.githubusercontent.com/LAHutchins91/invoice-mcp/main/logo.jpg",
-      "mimeType": "image/jpeg"
-    }
-  ],
+  "description": "Approved freelance invoice: line items, rates, due date, and late terms, over MCP.",
+  "version": "1.0.0",
+  "repository": {
+    "url": "https://github.com/LAHutchins91/invoice-mcp",
+    "source": "github"
+  },
   "remotes": [
     {
       "type": "streamable-http",
