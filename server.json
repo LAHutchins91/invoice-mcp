@@ -3,7 +3,7 @@
   "name": "io.github.LAHutchins91/invoice",
   "title": "Invoice",
   "description": "Approved freelance invoice: line items, rates, due date, and late terms, over MCP.",
-  "version": "1.0.1",
+  "version": "0.1.0",
   "websiteUrl": "https://invoice-continuity2.vercel.app",
   "repository": {
     "url": "https://github.com/LAHutchins91/invoice-mcp",
