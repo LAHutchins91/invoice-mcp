@@ -25,7 +25,7 @@ export function installPluginAuth(app: Express, baseUrl: string, supabaseUrl: st
     res.set({ "Cache-Control": "no-store", "Referrer-Policy": "no-referrer", "X-Frame-Options": "DENY" });
     res.type("html").send(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Connect Invoice</title>
 <style>body{margin:0;background:#121820;color:#e8eef2;font:17px/1.6 system-ui}main{max-width:560px;margin:8vh auto;padding:28px}a{color:#8ec5d6}button{font:inherit;padding:12px 16px;border-radius:10px;border:0;background:#245c78;color:#fff;cursor:pointer;margin:8px 8px 8px 0}button.secondary{background:transparent;border:1px solid #5d7d90}section{border:1px solid #2e4554;border-radius:16px;padding:20px;margin:16px 0}label{display:block;margin:12px 0}input{box-sizing:border-box;width:100%;padding:10px;font:inherit;border:1px solid #5d7d90;border-radius:8px;background:#0c1218;color:inherit}[hidden]{display:none!important}#error{color:#ffb4b4}</style>
-</head><body><main><a href="/">Invoice</a><h1 id="heading">Connect your approved invoice</h1>
+</head><body><main><strong>Invoice</strong><h1 id="heading">Connect your approved invoice</h1>
 <p>Sign in with your Invoice account. Do not paste an API key or password into an MCP header.</p>
 <p id="status" role="status">Checking your sign-in…</p><p id="error" role="alert"></p>
 <button id="signout" class="secondary" hidden type="button">Use a different account</button>
@@ -35,7 +35,7 @@ export function installPluginAuth(app: Express, baseUrl: string, supabaseUrl: st
 <p>This form signs in on this page. It is not a header and it is not an API key.</p></details>
 <section id="consent" hidden><h2 id="client"></h2><p>This application will be able to:</p>
 <ul><li>Read your approved invoice: line items, quantities, rates, the due date, and late terms.</li><li>Update them when you approve, including invoice changes you explicitly accept.</li><li>Read your account email and subscription status.</li></ul>
-<p>Your Pro or trial subscription still applies. The tools refuse a new line, a changed rate, a discount, and a moved due date unless you accept that change. Billing changes are not available through the tools.</p>
+<p>Your Invoice account permissions still apply. The tools refuse a new line, a changed rate, a discount, and a moved due date unless you accept that change. Billing changes are not available through the tools.</p>
 <p id="destination"></p><p id="scopes"></p>
 <button id="approve" type="button">Connect</button><button id="deny" class="secondary" type="button">Cancel</button></section>
 <section id="connections" hidden><p>You can disconnect an application at any time.</p><div id="grants"></div></section>

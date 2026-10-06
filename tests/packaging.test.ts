@@ -12,7 +12,7 @@ describe("packaging", () => {
     const server = JSON.parse(read("server.json")) as { name: string; version: string; websiteUrl?: string; remotes: Array<{ type: string; url: string }> };
     expect(server.name).toBe("io.github.LAHutchins91/invoice");
     expect(server.version).toBe(INVOICE_VERSION);
-    expect(server.websiteUrl).toBeUndefined();
+    expect(server.websiteUrl).toBe("https://invoice-continuity2.vercel.app");
     expect(server.remotes).toEqual([{ type: "streamable-http", url: "https://invoice-continuity2.vercel.app/mcp" }]);
     const docker = read("Dockerfile");
     expect(docker).toContain("FROM node:22-alpine AS build");
