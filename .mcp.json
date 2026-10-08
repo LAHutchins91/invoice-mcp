@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "invoice": {
+      "url": "https://invoice-continuity2.vercel.app/mcp"
+    }
+  }
+}

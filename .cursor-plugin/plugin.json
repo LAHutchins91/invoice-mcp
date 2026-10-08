@@ -1,0 +1,20 @@
+{
+  "name": "invoice",
+  "displayName": "Invoice by Ouroboros Apps",
+  "version": "1.0.3",
+  "description": "Invoice drafts freelance invoices from approved rates, due dates, and late terms so an assistant does not invent billing terms.",
+  "author": {
+    "name": "Ouroboros"
+  },
+  "homepage": "https://ouroborosapps.com",
+  "repository": "https://github.com/LAHutchins91/invoice-mcp",
+  "license": "MIT",
+  "keywords": [
+    "freelance",
+    "invoices",
+    "due dates",
+    "mcp"
+  ],
+  "logo": "logo.jpg",
+  "publisher": "Ouroboros"
+}
