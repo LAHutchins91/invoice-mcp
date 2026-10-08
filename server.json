@@ -2,9 +2,9 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.LAHutchins91/invoice",
   "title": "Invoice",
-  "description": "Approved freelance invoice: line items, rates, due date, and late terms, over MCP.",
-  "version": "0.1.0",
-  "websiteUrl": "https://invoice-continuity2.vercel.app",
+  "description": "Approved freelance invoices: line items, rates, due dates, and late terms for AI assistants.",
+  "version": "1.0.2",
+  "websiteUrl": "https://ouroborosapps.com/docs/invoice",
   "repository": {
     "url": "https://github.com/LAHutchins91/invoice-mcp",
     "source": "github"

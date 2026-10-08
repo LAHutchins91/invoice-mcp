@@ -8,7 +8,14 @@ Sign in with your Invoice account when the assistant opens OAuth. Do not paste a
 
 Invoice tools need Pro or an active trial. A new subscription includes a 14-day trial. This page does not list a price. Checkout shows the billing interval and payment terms. Amounts stored on an invoice are the freelancer's approved figures, in whole minor units of the invoice currency. They are not a product price.
 
-There is no hosted production domain in this repository. Run the server yourself and use the base URL you configure. The default MCP address is `http://127.0.0.1:3000/mcp`.
+To self-host, run the server and use the base URL you configure. The default MCP address is `http://127.0.0.1:3000/mcp`.
+
+## Hosted server
+
+- MCP server URL: `https://invoice-continuity2.vercel.app/mcp` (Streamable HTTP, OAuth sign-in)
+- Docs: https://ouroborosapps.com/docs/invoice
+- Status: early access. Paste the URL into Claude, Cursor, Grok, or ChatGPT developer mode.
+- Registry name: `io.github.LAHutchins91/invoice`
 
 ## What the assistant can do
 
